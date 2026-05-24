@@ -1,0 +1,35 @@
+# NexusFFXIV
+
+**Plugin framework and reusable modules for FINAL FANTASY XIV Dalamud plugins.**
+
+NexusFFXIV is home to two related projects: a plugin-agnostic framework (NexusKit) and a set of opt-in feature modules built on top of it (NexusKit.Modules). Together they aim to give Dalamud plugin authors a sturdy, batteries-included foundation — composition, persistence, UI, IPC, game-data lookups, chat notifications, and ready-made integrations with community sources like Lodestone and FFXIVCollect.
+
+## Projects
+
+| Project | What it is |
+|---|---|
+| [**NexusKit**](https://github.com/NexusFFXIV/NexusKit) | Plugin-agnostic framework. Seven libraries: `Core`, `Persistence`, `Hosting`, `Ui`, `Ipc`, `GameData`, `ChatNotifications`. |
+| [**NexusKit.Modules**](https://github.com/NexusFFXIV/NexusKit.Modules) | Reusable feature modules: `InternalData`, `ExternalData`, `PlayerEnrichment`, plus external bridges to `FFXIVCollect`, `Lodestone`, and `PluginBridge`. |
+
+## Plugins
+
+Dalamud plugins built on NexusKit + NexusKit.Modules. Each plugin is a self-contained consumer of the framework — they share infrastructure but no plugin state.
+
+| Plugin | Status | What it does |
+|---|---|---|
+| [**PlayerNexusTracker**](https://github.com/NexusFFXIV/PlayerNexusTracker) | Active | Tracks players you meet — local session observation plus optional Lodestone / FFXIVCollect enrichment. Successor to PlayerTrack / PlayerNexus. |
+| _Your plugin here_ | — | Building on NexusKit? Open a PR against [`NexusFFXIV/.github`](https://github.com/NexusFFXIV/.github) to add it. |
+
+## Install
+
+All packages are published to GitHub Packages under this org:
+
+```
+https://nuget.pkg.github.com/NexusFFXIV/index.json
+```
+
+GitHub Packages requires authentication even for public packages. Configure a `nuget.config` in your consumer project with a personal access token that has the `read:packages` scope. See each project's README for ready-to-paste snippets.
+
+## License
+
+Everything in this org is released under **AGPL-3.0-only**. Contributions are welcome under the same license — derivative works and redistribution must remain open.
