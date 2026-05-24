@@ -20,9 +20,24 @@ Dalamud plugins built on NexusKit + NexusKit.Modules. Each plugin is a self-cont
 | [**PlayerNexusTracker**](https://github.com/NexusFFXIV/PlayerNexusTracker) | Active | Tracks players you meet — local session observation plus optional Lodestone / FFXIVCollect enrichment. |
 | _Your plugin here_ | — | Building on NexusKit? Open a PR against [`NexusFFXIV/.github`](https://github.com/NexusFFXIV/.github) to add it. |
 
-## Install
+## Install plugins (as a player)
 
-All packages are published to GitHub Packages under this org:
+Plugins built under NexusFFXIV ship through a custom Dalamud repo. In Dalamud:
+
+1. Open **Settings → Experimental → Custom Plugin Repositories**.
+2. Paste:
+   ```
+   https://raw.githubusercontent.com/NexusFFXIV/DalamudRepo/main/pluginmaster.json
+   ```
+3. Save, then install plugins via `/xlplugins` → **All Plugins**.
+
+Testing/Beta builds: tick **Settings → Experimental → Get plugin testing builds**. Stable users continue to see only stable releases.
+
+Source of the repo manifest: [NexusFFXIV/DalamudRepo](https://github.com/NexusFFXIV/DalamudRepo).
+
+## Install packages (as a plugin author)
+
+All NexusKit and NexusKit.Modules packages are published to GitHub Packages under this org:
 
 ```
 https://nuget.pkg.github.com/NexusFFXIV/index.json
