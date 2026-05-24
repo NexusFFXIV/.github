@@ -17,7 +17,7 @@ Dalamud plugins built on NexusKit + NexusKit.Modules. Each plugin is a self-cont
 
 | Plugin | Status | What it does |
 |---|---|---|
-| [**PlayerNexusTracker**](https://github.com/NexusFFXIV/PlayerNexusTracker) | Active | Tracks players you meet — local session observation plus optional Lodestone / FFXIVCollect enrichment. Successor to PlayerTrack / PlayerNexus. |
+| [**PlayerNexusTracker**](https://github.com/NexusFFXIV/PlayerNexusTracker) | Active | Tracks players you meet — local session observation plus optional Lodestone / FFXIVCollect enrichment. |
 | _Your plugin here_ | — | Building on NexusKit? Open a PR against [`NexusFFXIV/.github`](https://github.com/NexusFFXIV/.github) to add it. |
 
 ## Install
