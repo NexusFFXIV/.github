@@ -10,6 +10,7 @@ NexusFFXIV is home to two related projects: a plugin-agnostic framework (NexusKi
 |---|---|
 | [**NexusKit**](https://github.com/NexusFFXIV/NexusKit) | Plugin-agnostic framework. Seven libraries: `Core`, `Persistence`, `Hosting`, `Ui`, `Ipc`, `GameData`, `ChatNotifications`. |
 | [**NexusKit.Modules**](https://github.com/NexusFFXIV/NexusKit.Modules) | Reusable feature modules: `InternalData`, `ExternalData`, `PlayerEnrichment`, plus external bridges to `FFXIVCollect`, `Lodestone`, and `PluginBridge`. |
+| [**DalamudRepo**](https://github.com/NexusFFXIV/DalamudRepo) | Custom Dalamud plugin repository. Hosts our own plugins **and** curates a mirror of third-party Dalamud repos — five scoped manifests (NexusFFXIV-only, individual third-party imports, curated third-party repos, auto-discovered third-party repos, plus a deduped union). The single URL players subscribe to. |
 
 ## Plugins
 
