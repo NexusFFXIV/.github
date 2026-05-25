@@ -1,0 +1,47 @@
+name: Expand Internal Deps Changelog
+description: >
+  Append a "📦 Internal Dependency Changes" section to a GitHub Release body,
+  listing PRs from NexusFFXIV org sub-repos whose package versions changed
+  between the previous and current release tag.
+
+inputs:
+  release-tag:
+    description: Tag of the release to expand. Defaults to github.ref_name when called from a tag-push.
+    required: false
+    default: ${{ github.ref_name }}
+  lockfile-globs:
+    description: Semicolon-separated glob(s) for packages.lock.json files to inspect.
+    required: false
+    default: '**/packages.lock.json'
+  csproj-globs:
+    description: Semicolon-separated glob(s) for csproj files to inspect.
+    required: false
+    default: '**/*.csproj'
+  package-prefix:
+    description: Package-ID prefix that identifies an internal dependency. Packages not starting with this are ignored.
+    required: false
+    default: NexusKit.
+  prefix-map:
+    description: JSON object mapping package-ID prefix → "owner/repo". Longest-prefix wins per package ID.
+    required: false
+    default: '{"NexusKit.Modules.":"NexusFFXIV/NexusKit.Modules","NexusKit.":"NexusFFXIV/NexusKit"}'
+  github-token:
+    description: Token used for gh CLI (gh release view/edit, gh api compare). Needs contents:write on the current repo + read on the sub-repos.
+    required: false
+    default: ${{ github.token }}
+
+runs:
+  using: composite
+  steps:
+    - name: Expand internal dependency changelog
+      shell: pwsh
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+      run: |
+        & '${{ github.action_path }}/expand.ps1' `
+          -ReleaseTag '${{ inputs.release-tag }}' `
+          -LockfileGlobs '${{ inputs.lockfile-globs }}' `
+          -CsprojGlobs '${{ inputs.csproj-globs }}' `
+          -PackagePrefix '${{ inputs.package-prefix }}' `
+          -PrefixMap '${{ inputs.prefix-map }}'
