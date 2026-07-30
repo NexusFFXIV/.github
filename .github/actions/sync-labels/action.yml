@@ -1,0 +1,43 @@
+name: Sync Dependabot Labels
+description: >
+  Ensure every label referenced by the calling repository's dependabot.yml
+  actually exists. Dependabot does not create labels listed explicitly under
+  `labels:` — it aborts the update with "The following labels could not be
+  found" and opens no pull request at all, so a repo whose labels were never
+  created silently stops getting dependency updates.
+
+  Reads the label names out of dependabot.yml rather than taking a list, so the
+  config stays the single source of truth and a repo only gets the labels its
+  own ecosystems use.
+
+inputs:
+  config-path:
+    description: Path to the Dependabot config, relative to the workspace root.
+    required: false
+    default: .github/dependabot.yml
+  label-styles:
+    description: >
+      JSON object mapping label name to { color, description }. Names not listed
+      here still get created, using the fallback colour and a generic description.
+    required: false
+    default: |
+      {
+        "dependencies":   { "color": "0366d6", "description": "Pull requests that update a dependency file" },
+        "github-actions": { "color": "000000", "description": "Pull requests that update GitHub Actions code" },
+        "nuget":          { "color": "004880", "description": "Pull requests that update NuGet dependencies" }
+      }
+  fallback-color:
+    description: Colour for labels that have no entry in label-styles.
+    required: false
+    default: ededed
+
+runs:
+  using: composite
+  steps:
+    - name: Sync labels
+      shell: pwsh
+      run: |
+        & '${{ github.action_path }}/sync.ps1' `
+          -ConfigPath '${{ inputs.config-path }}' `
+          -LabelStyles '${{ inputs.label-styles }}' `
+          -FallbackColor '${{ inputs.fallback-color }}'
