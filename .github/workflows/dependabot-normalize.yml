@@ -51,7 +51,10 @@ jobs:
         shell: bash
         env:
           GITHUB_PACKAGES_PAT: ${{ secrets.GITHUB_TOKEN }}
-        run: dotnet restore "${{ inputs.solution }}" --force-evaluate
+        # Always materialize and refresh NuGet lock files. Some repositories
+        # already track them while others do not set the MSBuild property in
+        # every project; passing it here makes Dependabot updates deterministic.
+        run: dotnet restore "${{ inputs.solution }}" --force-evaluate -p:RestorePackagesWithLockFile=true
 
       - name: Commit normalized dependency resolution
         shell: bash
