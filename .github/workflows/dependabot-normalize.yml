@@ -60,7 +60,11 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add Directory.Packages.props '**/packages.lock.json'
+          # Some solutions use PackageReference without lock files. Avoid a
+          # failing literal glob when no packages.lock.json exists.
+          git add -A -- Directory.Packages.props
+          find . -type f -name packages.lock.json -print0 \
+            | xargs -0 -r git add -A --
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "ci: normalize Dependabot NuGet resolution"
           git push origin "HEAD:${BRANCH}"
