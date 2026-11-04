@@ -1,0 +1,35 @@
+name: Auto-merge Dependabot pull requests
+
+on:
+  workflow_call:
+
+jobs:
+  automerge:
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Enable auto-merge when the pull request is mergeable
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          read -r state mergeable merge_state < <(
+            gh pr view "$PR_NUMBER" --repo "$REPOSITORY" \
+              --json state,mergeable,mergeStateStatus \
+              --jq '[.state, .mergeable, .mergeStateStatus] | @tsv'
+          )
+
+          if [ "$state" != "OPEN" ] || [ "$mergeable" != "MERGEABLE" ]; then
+            echo "Skipping Dependabot PR #$PR_NUMBER: state=$state mergeable=$mergeable mergeState=$merge_state"
+            exit 0
+          fi
+
+          # --auto queues the squash merge until required checks/reviews are
+          # satisfied, or merges immediately when they are already green.
+          gh pr merge "$PR_NUMBER" --repo "$REPOSITORY" --auto --squash --delete-branch
