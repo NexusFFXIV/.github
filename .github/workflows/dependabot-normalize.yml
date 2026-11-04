@@ -63,9 +63,12 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          # Some solutions use PackageReference without lock files. Avoid a
-          # failing literal glob when no packages.lock.json exists.
-          git add -A -- Directory.Packages.props
+          # Some solutions do not use central package management. Only stage
+          # the optional props file when it exists; `git add` otherwise exits
+          # with a pathspec error and blocks an otherwise valid Dependabot PR.
+          if [ -f Directory.Packages.props ]; then
+            git add -A -- Directory.Packages.props
+          fi
           find . -type f -name packages.lock.json -print0 \
             | xargs -0 -r git add -A --
           if git diff --cached --quiet; then exit 0; fi
